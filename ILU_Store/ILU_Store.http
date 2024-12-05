@@ -1,0 +1,6 @@
+@ILU_Store_HostAddress = http://localhost:5087
+
+GET {{ILU_Store_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
