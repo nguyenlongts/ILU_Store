@@ -21,24 +21,23 @@ namespace ILU_Store.Controllers
             _context = context;
         }
         
-        //Admin xem danh sách nhân viên
         [HttpGet]
         [Route("Employees")]
         public async Task<ActionResult<IEnumerable<User>>> GetEmployees(int pageNumber = 1, int pageSize = 10)
         {
-            var employees = await _context.Users.Where(e => e.RoleId == 2)
+            var employees = await _context.Users.Where(e => e.Role.Name == "Employee")
                                                 .Include(e => e.Addresses)
                                                 .Skip((pageNumber - 1) * pageSize)
                                                 .Take(pageSize)
                                                 .ToListAsync();
             return Ok(employees);
         }
-        //Tìm kiếm đa trường: FullName, Email, Username
+     
         [HttpGet("Search/{keyword}")]
         public async Task<ActionResult<IEnumerable<User>>> Search(int pageNumber = 1, int pageSize = 10, string keyword = "")
         {
 
-            var query = _context.Users.Where(e => e.RoleId == 2);
+            var query = _context.Users.Where(e => e.Role.Name == "Employee");
 
             if (!string.IsNullOrEmpty(keyword))
             {
@@ -72,7 +71,7 @@ namespace ILU_Store.Controllers
         }
 
 
-        //Admin update Role hoặc Status cho nhân viên
+       
         [HttpPut("UpdateByAdmin/{id}")]
  
         public async Task<IActionResult> UpdateEmployeeByAdmin(int id, UpdateEmployeeModel model)
@@ -86,7 +85,7 @@ namespace ILU_Store.Controllers
             return Ok("Update successfully");
         }
 
-        //Admin tạo tài khoản cho nhân viên mới
+        
         [HttpPost]
         [Route("Create")]
         public async Task<ActionResult<User>> CreateEmployee(CreateEmployeeModel model)
