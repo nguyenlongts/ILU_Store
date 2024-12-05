@@ -22,7 +22,7 @@ namespace ILU_Store.Controllers
         }
         
         [HttpGet]
-        [Route("Employees")]
+        [Route("GetAll")]
         public async Task<ActionResult<IEnumerable<User>>> GetEmployees(int pageNumber = 1, int pageSize = 10)
         {
             var employees = await _context.Users.Where(e => e.Role.Name == "Employee")
@@ -56,7 +56,7 @@ namespace ILU_Store.Controllers
         }
 
 
-        [HttpGet("GetEmployeeByID/{id}")]
+        [HttpGet("GetByID/{id}")]
         public async Task<ActionResult<User>> GetEmployeeByID(int id)
         {
             var user = await _context.Users
@@ -112,9 +112,7 @@ namespace ILU_Store.Controllers
         {
             var user = await _context.Users.FindAsync(id);
             if (user == null)
-            {
-                return NotFound();
-            }
+
 
             _context.Users.Remove(user);
             await _context.SaveChangesAsync();
